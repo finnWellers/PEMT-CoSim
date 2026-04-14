@@ -40,53 +40,6 @@ class EVFederate:
 
     def create_federate(self):
         print(f"Creating EV federate")
-        fed_json = {
-            "name": "ev",
-            "uninterruptible": False,
-            "publications": [
-                p for i in range(self.num_evs) for p in [
-                    {
-                        "key": f"H{i}_ev#location",
-                        "type": "string",
-                        "global": False
-                    },
-                    {
-                        "key": f"H{i}_ev#stored_energy",
-                        "type": "double",
-                        "global": False
-                    },
-                    {
-                        "key": f"H{i}_ev#soc",
-                        "type": "double",
-                        "global": False
-                    },
-                    {
-                        "key": f"H{i}_ev#charging_load",
-                        "type": "complex",
-                        "global": False
-                    },
-                    {
-                        "key": f"H{i}_ev#max_charging_load",
-                        "type": "double",
-                        "global": False
-                    },
-                    {
-                        "key": f"H{i}_ev#min_charging_load",
-                        "type": "double",
-                        "global": False
-                    }
-                ]
-            ],
-            "subscriptions": [
-                {
-                    "key": f"substation/H{i}_ev#charge_rate",
-                    "type": "double"
-                } for i in range(self.num_evs)
-            ]
-        }
-        with open("ev_helics_config.json", "w") as config_file:
-            json.dump(fed_json, config_file, indent=4)
-
         self.helics_fed = helics.helicsCreateValueFederateFromConfig("ev_helics_config.json")
         self.fed_name = self.helics_fed.name
         print(f"EV federate {self.fed_name} created", flush=True)

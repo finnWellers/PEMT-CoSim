@@ -12,6 +12,7 @@ from scenario import PETScenario
 class PETRunner:
     def __init__(self, scenario: PETScenario):
         self.scenario = scenario
+        self.generate_auxiliary_files()
 
     def generate_auxiliary_files(self):
         # generate gridlabd config
@@ -45,7 +46,54 @@ class PETRunner:
         json.dump(pypower_config, open("fed_pypower/pypower_config.json", "w"), indent=4)
         print(f"wrote pypower HELICS config")
 
+        # update ev config
+        fed_json = {
+            "name": "ev",
+            "uninterruptible": False,
+            "publications": [
+                p for i in range(self.scenario.num_ev) for p in [
+                    {
+                        "key": f"H{i}_ev#location",
+                        "type": "string",
+                        "global": False
+                    },
+                    {
+                        "key": f"H{i}_ev#stored_energy",
+                        "type": "double",
+                        "global": False
+                    },
+                    {
+                        "key": f"H{i}_ev#soc",
+                        "type": "double",
+                        "global": False
+                    },
+                    {
+                        "key": f"H{i}_ev#charging_load",
+                        "type": "complex",
+                        "global": False
+                    },
+                    {
+                        "key": f"H{i}_ev#max_charging_load",
+                        "type": "double",
+                        "global": False
+                    },
+                    {
+                        "key": f"H{i}_ev#min_charging_load",
+                        "type": "double",
+                        "global": False
+                    }
+                ]
+            ],
+            "subscriptions": [
+                {
+                    "key": f"substation/H{i}_ev#charge_rate",
+                    "type": "double"
+                } for i in range(self.scenario.num_ev)
+            ]
+        }
+        with open("fed_substation/ev_helics_config.json", "w") as config_file:
+            json.dump(fed_json, config_file, indent=4)
+
     def run(self):
         self.scenario.save("scenario.pkl")
-        self.generate_auxiliary_files()
         subprocess.call(("helics", "run", f"--path=runner.json"))

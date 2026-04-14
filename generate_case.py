@@ -53,8 +53,8 @@ if __name__ == "__main__":
             ev_buy_iqr_ratio=args.ev_buy_iqr_ratio
         )
         pickle.dump(scenario, open(f"scenarios/{scenario.name}.pkl", "wb"))
-
-    if(args.run):
+    runner = PETRunner(scenario)
+    if args.run:
         print(f"running cosimulation immediately")
-        PETRunner(scenario).run()
+        runner.run()
         print(f"cosimulation finished")

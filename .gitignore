@@ -26,3 +26,9 @@ scenarios/*
 
 
 !**/.gitkeep
+fed_ev/ev_driving_loads.html
+fed_ev/ev_driving_loads.png
+fed_ev/ev_locations.html
+fed_ev/ev_locations.png
+fed_substation/ev_helics_config.json
+fed_substation/house_loads_sample.csv

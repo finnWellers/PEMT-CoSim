@@ -1,0 +1,11 @@
+comm==0.2.2
+emobpy==0.6.2
+glm==0.4.4
+helics==3.6.1
+matplotlib==3.10.8
+numpy==2.2.6
+pandas==2.2.3
+plotly==6.7.0
+pypower==5.1.19
+scipy==1.17.1
+kaleido==1.2.0

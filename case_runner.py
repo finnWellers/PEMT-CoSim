@@ -91,7 +91,7 @@ class PETRunner:
                 } for i in range(self.scenario.num_ev)
             ]
         }
-        with open("fed_substation/ev_helics_config.json", "w") as config_file:
+        with open("fed_ev/ev_helics_config.json", "w") as config_file:
             json.dump(fed_json, config_file, indent=4)
 
     def run(self):
